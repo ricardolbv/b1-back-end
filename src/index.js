@@ -14,7 +14,7 @@ const swaggerOpts = {
         title: "B1 - API",
         description: "API da aplicação B1 - TCC Eng de Software 2021"
       },
-      servers: ["http://localhost:3333"]
+      servers: ["http://localhost:"+port]
     },
     apis: ['./src/routes/*.js']
 }
