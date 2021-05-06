@@ -30,6 +30,9 @@ app.use(cors());
 
 /**  Adicionar rotas de forma isolada */
 app.use(routes());
+app.use('/', (req, res) => { 
+  res.send({ status: 'ok', data: 'B1' })
+ })
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(logger('dev'));
