@@ -3,10 +3,27 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require("cors");
+var swaggerJsDoc = require('swagger-jsdoc');
+var swaggerUi = require('swagger-ui-express');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+/** Config do Swagger */
+const swaggerOpts = {
+  swaggerDefinition: {
+    info: {
+      title: "B1 - API",
+      description: "API da aplicação B1 - TCC Eng de Software 2021"
+    },
+    servers: ["http://localhost:5000"]
+  },
+  apis: ['./routes/*.js']
+}
+
+
+const swaggerDocs = swaggerJsDoc(swaggerOpts);
 var app = express();
 
 // view engine setup
@@ -18,9 +35,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
