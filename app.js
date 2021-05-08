@@ -6,6 +6,7 @@ var logger = require('morgan');
 const cors = require("cors");
 var swaggerJsDoc = require('swagger-jsdoc');
 var swaggerUi = require('swagger-ui-express');
+var db = require('./database/db');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -22,6 +23,14 @@ const swaggerOpts = {
   apis: ['./routes/*.js']
 }
 
+db
+  .authenticate()
+  .then(function () {
+    console.log("Conectando com sucesso!");
+  })
+  .catch(function (erro) {
+    console.log("Falha ao se conectar: " + erro);
+  });
 
 const swaggerDocs = swaggerJsDoc(swaggerOpts);
 var app = express();
