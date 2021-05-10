@@ -8,8 +8,7 @@ var swaggerJsDoc = require('swagger-jsdoc');
 var swaggerUi = require('swagger-ui-express');
 var db = require('./database/db');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var routes = require('./routes/routes');
 
 /** Config do Swagger */
 const swaggerOpts = {
@@ -46,8 +45,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(routes());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // catch 404 and forward to error handler
