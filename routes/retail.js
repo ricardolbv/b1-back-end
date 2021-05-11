@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 var retailController = require("../controllers/retailController");
 
+//teste
+
 /**
  * @swagger
  * /retail:
@@ -30,7 +32,7 @@ router.get("/", async (req, res, next) => {
  * @swagger
  * /retail:
  *  post:
- *    summary: Cria um varejo 
+ *    summary: Cria um varejo
  *    parameters:
  *      - in: body
  *        name: Varejo
@@ -46,7 +48,7 @@ router.get("/", async (req, res, next) => {
  *            nome_fantasia:
  *              type: string
  *            telefone:
- *              type: string 
+ *              type: string
  *            status:
  *              type: integer
  *            id_cargo:
@@ -69,8 +71,8 @@ router.get("/", async (req, res, next) => {
  *    tags:
  *      - varejo
  */
- router.post("/", async (req, res, next) => {
-  const data = await retailController.insert(req.body)
+router.post("/", async (req, res, next) => {
+  const data = await retailController.insert(req.body);
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });
