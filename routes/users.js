@@ -1,6 +1,6 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var userController = require('../controllers/userController');
+var userController = require("../controllers/userController");
 
 /**
  * @swagger
@@ -15,15 +15,15 @@ var userController = require('../controllers/userController');
  *    tags:
  *      - usuarios
  */
-router.get('/', function(req, res, next) {
+router.get("/", function (req, res, next) {
   const data = userController.selectAll();
   if (data.error) {
-    res.statusCode = 500
-    res.send({ status: 'error', data: 'Erro ao buscar usuarios' })
+    res.statusCode = 500;
+    res.send({ status: "error", data: "Erro ao buscar usuarios" });
   }
 
-  res.statusCode = 200
-  res.send({ status: 'ok', data: data});
+  res.statusCode = 200;
+  res.send({ status: "ok", data: data });
 });
 
 /**
@@ -51,14 +51,14 @@ router.get('/', function(req, res, next) {
  *    tags:
  *      - usuarios
  */
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
   data = userController.insert(req.body);
-  if (data.error){
-    res.statusCode = 500
-    res.send({ status: 'error', data: 'Erro ao inserir usuario' })
+  if (data.error) {
+    res.statusCode = 500;
+    res.send({ status: "error", data: "Erro ao inserir usuario" });
   }
-  res.statusCode = 200
-  res.send({ status: 'ok', data: data.data});
-})
+  res.statusCode = 200;
+  res.send({ status: "ok", data: data.data });
+});
 
 module.exports = router;

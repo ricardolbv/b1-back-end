@@ -1,6 +1,6 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var brandController = require('../controllers/brandController');
+var brandController = require("../controllers/brandController");
 
 /**
  * @swagger
@@ -15,15 +15,15 @@ var brandController = require('../controllers/brandController');
  *    tags:
  *      - marca
  */
- router.get('/', function(req, res, next) {
+router.get("/", function (req, res, next) {
   const data = brandController.selectAll();
   if (data.error) {
-    res.statusCode = 500
-    res.send({ status: 'error', data: 'Erro ao buscar usuarios' })
+    res.statusCode = 500;
+    res.send({ status: "error", data: "Erro ao buscar usuarios" });
   }
 
-  res.statusCode = 200
-  res.send({ status: 'ok', data: data});
+  res.statusCode = 200;
+  res.send({ status: "ok", data: data });
 });
 
 module.exports = router;
