@@ -3,12 +3,15 @@ const db = require("../database/db");
 
 const selectPerfil = async (profileDTO) => {
   try {
-    const cargo = await db.query(
-      `SELECT descricao FROM cargo WHERE id = '${profileDTO.id_cargo}'`
+    const sql = await db.query(
+      `SELECT descricao FROM cargo WHERE id = ${profileDTO.id_cargo}`
     );
+    const cargo = JSON.parse(JSON.stringify(sql[0]));
 
-    if (cargo == "Suporte") {
-      const profile = await db.query(
+    var profile = {};
+
+    if (cargo[0].descricao == "Suporte") {
+      profile = await db.query(
         `SELECT 
             l.email
             ,l.senha
@@ -25,8 +28,8 @@ const selectPerfil = async (profileDTO) => {
         AND l.senha = '${profileDTO.senha}'`
       );
     } else {
-      if (cargo == "Varejo") {
-        const profile = await db.query(
+      if (cargo[0].descricao == "Varejo") {
+        profile = await db.query(
           `SELECT 
             l.email
             ,l.senha
@@ -45,8 +48,8 @@ const selectPerfil = async (profileDTO) => {
            AND l.senha = '${profileDTO.senha}'`
         );
       } else {
-        if (cargo == "Marca") {
-          const profile = await db.query(
+        if (cargo[0].descricao == "Marca") {
+          profile = await db.query(
             `SELECT 
                   l.email
                   ,l.senha
@@ -82,6 +85,23 @@ const selectPerfil = async (profileDTO) => {
   }
 };
 
+const updatePassword = async (userDTO) => {
+  try {
+    const sqlUpdate = `UPDATE dbo.login
+    SET senha = '${userDTO.nova_senha}', updated_at =  GETDATE()
+    WHERE email = '${userDTO.email}' and senha = '${userDTO.senha}'`;
+
+    const executeUpdate = await db.query(sqlUpdate, {
+      type: db.QueryTypes.UPDATE,
+    });
+
+    return { data: "Senha alterada com sucesso" };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 module.exports = {
   selectPerfil,
+  updatePassword,
 };
