@@ -2,8 +2,6 @@ var express = require("express");
 var router = express.Router();
 var retailController = require("../controllers/retailController");
 
-//teste
-
 /**
  * @swagger
  * /retail:
