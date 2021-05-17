@@ -1,10 +1,9 @@
-const sequelize = require("sequelize");
 const db = require("../database/db");
 
 const selectPerfil = async (profileDTO) => {
   try {
     const sql = await db.query(
-      `SELECT descricao FROM cargo WHERE id = ${profileDTO.id_cargo}`
+      `SELECT descricao FROM cargo WHERE id = ${profileDTO.cargoId}`
     );
     const cargo = JSON.parse(JSON.stringify(sql[0]));
 
@@ -24,8 +23,7 @@ const selectPerfil = async (profileDTO) => {
         FROM dbo.login l
         INNER JOIN dbo.suporte s
         ON l.id = s.id_login
-        WHERE l.email = '${profileDTO.email}' 
-        AND l.senha = '${profileDTO.senha}'`
+        WHERE l.id = '${profileDTO.userId}'`
       );
     } else {
       if (cargo[0].descricao == "Varejo") {
@@ -44,8 +42,7 @@ const selectPerfil = async (profileDTO) => {
            FROM dbo.login l
            INNER JOIN dbo.varejo v
            ON l.id = v.id_login
-           WHERE l.email = '${profileDTO.email}' 
-           AND l.senha = '${profileDTO.senha}'`
+           WHERE l.id = '${profileDTO.userId}'`
         );
       } else {
         if (cargo[0].descricao == "Marca") {
@@ -72,8 +69,7 @@ const selectPerfil = async (profileDTO) => {
             inner join dbo.varejo v
             on v.id = m.id_varejo
            
-            WHERE l.email = '${profileDTO.email}' 
-            AND l.senha = '${profileDTO.senha}'`
+            WHERE l.id = '${profileDTO.userId}'`
           );
         }
       }
@@ -88,8 +84,8 @@ const selectPerfil = async (profileDTO) => {
 const updatePassword = async (userDTO) => {
   try {
     const sqlUpdate = `UPDATE dbo.login
-    SET senha = '${userDTO.nova_senha}', updated_at =  GETDATE()
-    WHERE email = '${userDTO.email}' and senha = '${userDTO.senha}'`;
+    SET senha = '${userDTO.body.nova_senha}', updated_at =  GETDATE()
+    WHERE id = '${userDTO.usuarioId}'`;
 
     const executeUpdate = await db.query(sqlUpdate, {
       type: db.QueryTypes.UPDATE,

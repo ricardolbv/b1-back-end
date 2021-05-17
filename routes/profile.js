@@ -1,6 +1,18 @@
 var express = require("express");
 var router = express.Router();
 var profileController = require("../controllers/profileController");
+const secret = "b1";
+const jwt = require("jsonwebtoken");
+
+function verifyJWT(req, res, next) {
+  const token = req.headers["x-access-token"];
+  jwt.verify(token, secret, (err, decoded) => {
+    if (err) return res.status(401).end();
+    req.usuarioId = decoded.usuarioId;
+    req.cargoId = decoded.cargoId;
+    next();
+  });
+}
 
 /**
  * @swagger
@@ -28,8 +40,8 @@ var profileController = require("../controllers/profileController");
  *      - Perfil
  */
 
-router.post("/", async (req, res, next) => {
-  const data = await profileController.selectPerfil(req.body);
+router.post("/", verifyJWT, async (req, res, next) => {
+  const data = await profileController.selectPerfil(req);
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });
@@ -63,8 +75,8 @@ router.post("/", async (req, res, next) => {
  *    tags:
  *      - Perfil
  */
-router.post("/update-password", async (req, res, next) => {
-  const data = await profileController.updatePassword(req.body);
+router.post("/update-password", verifyJWT, async (req, res, next) => {
+  const data = await profileController.updatePassword(req);
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });
