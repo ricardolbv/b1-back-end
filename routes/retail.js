@@ -28,7 +28,7 @@ router.get("/", async (req, res, next) => {
 
 /**
  * @swagger
- * /retail/create-retail:
+ * /retail/create:
  *  post:
  *    summary: Cadastra um varejo
  *    parameters:
@@ -51,8 +51,6 @@ router.get("/", async (req, res, next) => {
  *              type: string
  *            telefone:
  *              type: string
- *            status:
- *              type: integer
  *            id_cargo:
  *              type: integer
  *            id_segmento:
@@ -67,8 +65,41 @@ router.get("/", async (req, res, next) => {
  *    tags:
  *      - varejo
  */
-router.post("/create-retail", async (req, res, next) => {
+router.post("/create", async (req, res, next) => {
   const data = await retailController.createRetail(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
+
+/**
+ * @swagger
+ * /retail/update-status:
+ *  post:
+ *    summary: Atualiza o status do varejo
+ *    parameters:
+ *      - in: body
+ *        name: Varejo
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *            status:
+ *              type: integer
+ *    responses:
+ *      '200':
+ *        description:  Varejo cadastrado com sucesso
+ *      '500':
+ *        description: Erro ao cadastrar varejo
+ *    tags:
+ *      - varejo
+ */
+router.post("/update-status", async (req, res, next) => {
+  const data = await retailController.updateStatusRetail(req.body);
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });

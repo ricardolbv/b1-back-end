@@ -35,8 +35,8 @@ const createRetail = async (retailDTO) => {
 
       const sqlRetail = `INSERT INTO varejo
             (inscricao, cnpj, razao_social, nome_fantasia, telefone, status, id_cargo, id_login, id_segmento, created_at, updated_at)
-            VALUES('${retailDTO.inscricao}','${retailDTO.cnpj}','${retailDTO.razao_social}','${retailDTO.nome_fantasia}','${retailDTO.telefone}',
-                    ${retailDTO.status},'${retailDTO.id_cargo}', ${login[0].id}, '${retailDTO.id_segmento}',GETDATE(), GETDATE())`;
+            VALUES('${retailDTO.inscricao}','${retailDTO.cnpj}','${retailDTO.razao_social}','${retailDTO.nome_fantasia}','${retailDTO.telefone}',1,
+            '${retailDTO.id_cargo}', ${login[0].id}, '${retailDTO.id_segmento}',GETDATE(), GETDATE())`;
 
       const retail = await db.query(sqlRetail, {
         type: db.QueryTypes.INSERT,
@@ -51,7 +51,30 @@ const createRetail = async (retailDTO) => {
   }
 };
 
+const updateStatusRetail = async (retailDTO) => {
+  try {
+    const sql = await db.query(
+      `SELECT id FROM dbo.login WHERE email = '${retailDTO.email}'`
+    );
+
+    const idlogin = JSON.parse(JSON.stringify(sql[0]))[0].id;
+
+    const sqlUpdate = `UPDATE dbo.varejo
+      SET status = ${retailDTO.status}
+      WHERE id_login = '${idlogin}'`;
+
+    const executeUpdate = await db.query(sqlUpdate, {
+      type: db.QueryTypes.UPDATE,
+    });
+
+    return { data: "Status alterado com sucesso" };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 module.exports = {
   selectAll,
   createRetail,
+  updateStatusRetail,
 };
