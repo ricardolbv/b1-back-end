@@ -3,7 +3,7 @@ const db = require("../database/db");
 
 const selectAll = async () => {
   try {
-    const retail = await db.query("SELECT * FROM varejo");
+    const retail = await db.query("SELECT * FROM varejo v INNER JOIN login l ON v.id_login = l.id");
     return retail;
   } catch (error) {
     return { error: error.message };
