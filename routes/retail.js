@@ -6,7 +6,7 @@ var retailController = require("../controllers/retailController");
  * @swagger
  * /retail:
  *  get:
- *    summary: Retorna todas as marcas
+ *    summary: Retorna todos os varejos
  *    responses:
  *      '200':
  *        description: Retorna todos as varejos do sistema
@@ -28,15 +28,19 @@ router.get("/", async (req, res, next) => {
 
 /**
  * @swagger
- * /retail:
+ * /retail/create:
  *  post:
- *    summary: Cria um varejo
+ *    summary: Cadastra um varejo
  *    parameters:
  *      - in: body
  *        name: Varejo
  *        schema:
  *          type: object
  *          properties:
+ *            email:
+ *              type: string
+ *            senha:
+ *              type: string
  *            inscricao:
  *              type: string
  *            cnpj:
@@ -47,30 +51,55 @@ router.get("/", async (req, res, next) => {
  *              type: string
  *            telefone:
  *              type: string
- *            status:
- *              type: integer
  *            id_cargo:
- *              type: integer
- *            id_login:
  *              type: integer
  *            id_segmento:
  *              type: integer
- *            created_at:
- *              type: string
- *            updated_at:
- *              type: string
  *    responses:
  *      '200':
- *        description:  Varejo criado com sucesso
+ *        description:  Varejo cadastrado com sucesso
  *      '400':
- *        description: Erro ao criar varejo
+ *        description: Email informado já está sendo utilizado
  *      '500':
- *        description: Erro ao criar varejo
+ *        description: Erro ao cadastrar varejo
  *    tags:
  *      - varejo
  */
-router.post("/", async (req, res, next) => {
-  const data = await retailController.insert(req.body);
+router.post("/create", async (req, res, next) => {
+  const data = await retailController.createRetail(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
+
+/**
+ * @swagger
+ * /retail/update-status:
+ *  post:
+ *    summary: Atualiza o status do varejo
+ *    parameters:
+ *      - in: body
+ *        name: Varejo
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *            status:
+ *              type: integer
+ *    responses:
+ *      '200':
+ *        description:  Varejo cadastrado com sucesso
+ *      '500':
+ *        description: Erro ao cadastrar varejo
+ *    tags:
+ *      - varejo
+ */
+router.post("/update-status", async (req, res, next) => {
+  const data = await retailController.updateStatusRetail(req.body);
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });
