@@ -92,9 +92,9 @@ router.post("/create", async (req, res, next) => {
  *              type: integer
  *    responses:
  *      '200':
- *        description:  Varejo cadastrado com sucesso
+ *        description:  Status do varejo atualizado com sucesso
  *      '500':
- *        description: Erro ao cadastrar varejo
+ *        description: Erro ao atualizar status do varejo
  *    tags:
  *      - varejo
  */
@@ -108,4 +108,34 @@ router.post("/update-status", async (req, res, next) => {
   return res.send({ status: "ok", data: data.data });
 });
 
+/**
+ * @swagger
+ * /retail/delete:
+ *  post:
+ *    summary: Excluí o usuário varejo
+ *    parameters:
+ *      - in: body
+ *        name: Varejo
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *    responses:
+ *      '200':
+ *        description:  Varejo excluído com sucesso
+ *      '500':
+ *        description: Erro ao excluir varejo
+ *    tags:
+ *      - varejo
+ */
+router.post("/delete", async (req, res, next) => {
+  const data = await retailController.deleteRetail(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
 module.exports = router;
