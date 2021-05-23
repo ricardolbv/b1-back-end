@@ -73,8 +73,35 @@ const updateStatusRetail = async (retailDTO) => {
   }
 };
 
+const deleteRetail = async (retailDTO) => {
+  try {
+    const sqlLogin = await db.query(
+      `SELECT id FROM  dbo.login WHERE  email = '${retailDTO.email}'`
+    );
+
+    const idLogin = JSON.parse(JSON.stringify(sqlLogin[0]))[0].id;
+
+    const deleteRetail = `DELETE FROM dbo.varejo  WHERE id_login = '${idLogin}'`;
+
+    const executeDeleteRetail = await db.query(deleteRetail, {
+      type: db.QueryTypes.DELETE,
+    });
+
+    const deleteLogin = `DELETE FROM dbo.login  WHERE id = '${idLogin}'`;
+
+    const executeDeleteLogin = await db.query(deleteLogin, {
+      type: db.QueryTypes.DELETE,
+    });
+
+    return { data: "Varejo excluído com sucesso" };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 module.exports = {
   selectAll,
   createRetail,
   updateStatusRetail,
+  deleteRetail,
 };
