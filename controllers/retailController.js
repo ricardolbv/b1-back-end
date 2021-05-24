@@ -3,7 +3,33 @@ const db = require("../database/db");
 
 const selectAll = async () => {
   try {
-    const retail = await db.query("SELECT * FROM varejo v INNER JOIN login l ON v.id_login = l.id");
+    const retail = await db.query(
+      `SELECT 
+      v.id
+      ,v.inscricao
+      ,v.cnpj
+      ,v.razao_social
+      ,v.nome_fantasia
+      ,v.telefone
+      ,v.status
+      ,l.email
+      ,l.senha
+      ,c.descricao as cargo
+      ,s.segmento
+      ,v.created_at
+      ,v.updated_at
+      FROM dbo.varejo v
+        
+      inner join dbo.login l
+      on l.id = v.id_login
+      
+      inner join dbo.cargo c
+      on c.id = v.id_cargo
+      
+      inner join dbo.segmento s
+      on s.id = v.id_segmento`
+    );
+
     return retail;
   } catch (error) {
     return { error: error.message };

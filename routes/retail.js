@@ -71,6 +71,10 @@ router.post("/create", async (req, res, next) => {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });
   }
+  if (data.errorEmail) {
+    res.statusCode = 400;
+    return res.send({ status: "error", data: data.errorEmail });
+  }
   res.statusCode = 200;
   return res.send({ status: "ok", data: data.data });
 });
