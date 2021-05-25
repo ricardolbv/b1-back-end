@@ -125,9 +125,49 @@ const deleteRetail = async (retailDTO) => {
   }
 };
 
+const updateRetail = async (retailDTO) => {
+  try {
+    const sql = await db.query(
+      `SELECT v.id FROM dbo.varejo v
+       inner join dbo.login l
+       on l.id = v.id_login
+       WHERE email = '${retailDTO.email}'`
+    );
+
+    const idRetail = JSON.parse(JSON.stringify(sql[0]))[0].id;
+
+    const sqlRetailUpdate = `UPDATE dbo.varejo
+      SET inscricao = '${retailDTO.update_inscricao}',
+          cnpj = '${retailDTO.update_cnpj}',
+          razao_social = '${retailDTO.update_razao_social}',
+          nome_fantasia = '${retailDTO.update_nome_fantasia}',
+          telefone = '${retailDTO.update_telefone}',
+          id_segmento = '${retailDTO.update_id_segmento}',
+          updated_at = GETDATE()
+      WHERE id = '${idRetail}'`;
+
+    const sqlLoginUpdate = `UPDATE dbo.login
+      SET senha = '${retailDTO.update_senha}',
+          updated_at = GETDATE()
+      WHERE email = '${retailDTO.email}'`;
+
+    await db.query(sqlRetailUpdate, {
+      type: db.QueryTypes.UPDATE,
+    });
+
+    await db.query(sqlLoginUpdate, {
+      type: db.QueryTypes.UPDATE,
+    });
+
+    return { data: "Varejo alterado com sucesso" };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
 module.exports = {
   selectAll,
   createRetail,
   updateStatusRetail,
   deleteRetail,
+  updateRetail,
 };
