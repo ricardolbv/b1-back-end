@@ -5,6 +5,7 @@ const brandRouter = require("./brands");
 const loginRouter = require("./login");
 const retailRouter = require("./retail");
 const profileRouter = require("./profile");
+const segmentRouter = require("./segment");
 
 module.exports = () => {
   const router = express.Router();
@@ -14,6 +15,7 @@ module.exports = () => {
   router.use("/login", loginRouter);
   router.use("/retail", retailRouter);
   router.use("/profile", profileRouter);
+  router.use("/segment", segmentRouter);
 
   return router;
 };
