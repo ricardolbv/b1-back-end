@@ -55,6 +55,8 @@ router.get("/", async (req, res, next) => {
  *              type: integer
  *            id_segmento:
  *              type: integer
+ *            status:
+ *              type: integer
  *    responses:
  *      '200':
  *        description:  Varejo cadastrado com sucesso

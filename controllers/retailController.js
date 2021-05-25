@@ -47,7 +47,7 @@ const createRetail = async (retailDTO) => {
     if (validateEmail == 0) {
       const insertLogin = `INSERT INTO dbo.login
             (email, senha, url_foto_perfil, id_cargo, created_at, updated_at, status)
-            VALUES('${retailDTO.email}','${retailDTO.senha}',NULL,'${retailDTO.id_cargo}',GETDATE(), GETDATE(), '${retailDTO.status}')`;
+            VALUES('${retailDTO.email}','${retailDTO.senha}',NULL,'${retailDTO.id_cargo}',GETDATE(), GETDATE())`;
 
       const user = await db.query(insertLogin, {
         type: db.QueryTypes.INSERT,
@@ -61,7 +61,7 @@ const createRetail = async (retailDTO) => {
 
       const sqlRetail = `INSERT INTO varejo
             (inscricao, cnpj, razao_social, nome_fantasia, telefone, status, id_cargo, id_login, id_segmento, created_at, updated_at)
-            VALUES('${retailDTO.inscricao}','${retailDTO.cnpj}','${retailDTO.razao_social}','${retailDTO.nome_fantasia}','${retailDTO.telefone}',1,
+            VALUES('${retailDTO.inscricao}','${retailDTO.cnpj}','${retailDTO.razao_social}','${retailDTO.nome_fantasia}','${retailDTO.telefone}','${retailDTO.status}',
             '${retailDTO.id_cargo}', ${login[0].id}, '${retailDTO.id_segmento}',GETDATE(), GETDATE())`;
 
       const retail = await db.query(sqlRetail, {
