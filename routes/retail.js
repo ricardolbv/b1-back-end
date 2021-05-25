@@ -142,4 +142,50 @@ router.post("/delete", async (req, res, next) => {
   res.statusCode = 200;
   return res.send({ status: "ok", data: data.data });
 });
+
+/**
+ * @swagger
+ * /retail/update-retail:
+ *  post:
+ *    summary: Atualiza um varejo
+ *    parameters:
+ *      - in: body
+ *        name: Varejo
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *            update_senha:
+ *              type: string
+ *            update_inscricao:
+ *              type: string
+ *            update_cnpj:
+ *              type: string
+ *            update_razao_social:
+ *              type: string
+ *            update_nome_fantasia:
+ *              type: string
+ *            update_telefone:
+ *              type: string
+ *            update_id_segmento:
+ *              type: integer
+ *    responses:
+ *      '200':
+ *        description:  Varejo atualizado com sucesso
+ *      '500':
+ *        description: Erro ao atualizar varejo
+ *    tags:
+ *      - varejo
+ */
+router.post("/update-retail", async (req, res, next) => {
+  const data = await retailController.updateRetail(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
+
 module.exports = router;
