@@ -13,7 +13,7 @@ var brandController = require("../controllers/brandController");
  *      '500':
  *        description: Erro ao retornar todas as marcas
  *    tags:
- *      - marca
+ *      - Marca
  */
 router.get("/", function (req, res, next) {
   const data = brandController.selectAll();
@@ -61,7 +61,7 @@ router.get("/", function (req, res, next) {
  *      '500':
  *        description: Erro ao cadastrar marca
  *    tags:
- *      - marca
+ *      - Marca
  */
 
 router.post("/create", function (req, res, next) {
@@ -73,6 +73,39 @@ router.post("/create", function (req, res, next) {
 
   res.statusCode = 200;
   res.send({ status: "ok", data: data });
+});
+
+/**
+ * @swagger
+ * /brands/update-status:
+ *  post:
+ *    summary: Atualiza o status da marca
+ *    parameters:
+ *      - in: body
+ *        name: Marca
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *            status:
+ *              type: integer
+ *    responses:
+ *      '200':
+ *        description:  Status da marca atualizado com sucesso
+ *      '500':
+ *        description: Erro ao atualizar status da marca
+ *    tags:
+ *      - Marca
+ */
+router.post("/update-status", async (req, res, next) => {
+  const data = await retailController.updateStatusRetail(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
 });
 
 module.exports = router;

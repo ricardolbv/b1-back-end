@@ -13,7 +13,7 @@ var retailController = require("../controllers/retailController");
  *      '500':
  *        description: Erro ao retornar todos os varejos
  *    tags:
- *      - varejo
+ *      - Varejo
  */
 router.get("/", async (req, res, next) => {
   const data = await retailController.selectAll();
@@ -65,7 +65,7 @@ router.get("/", async (req, res, next) => {
  *      '500':
  *        description: Erro ao cadastrar varejo
  *    tags:
- *      - varejo
+ *      - Varejo
  */
 router.post("/create", async (req, res, next) => {
   const data = await retailController.createRetail(req.body);
@@ -102,7 +102,7 @@ router.post("/create", async (req, res, next) => {
  *      '500':
  *        description: Erro ao atualizar status do varejo
  *    tags:
- *      - varejo
+ *      - Varejo
  */
 router.post("/update-status", async (req, res, next) => {
   const data = await retailController.updateStatusRetail(req.body);
@@ -133,7 +133,7 @@ router.post("/update-status", async (req, res, next) => {
  *      '500':
  *        description: Erro ao excluir varejo
  *    tags:
- *      - varejo
+ *      - Varejo
  */
 router.post("/delete", async (req, res, next) => {
   const data = await retailController.deleteRetail(req.body);
@@ -178,7 +178,7 @@ router.post("/delete", async (req, res, next) => {
  *      '500':
  *        description: Erro ao atualizar varejo
  *    tags:
- *      - varejo
+ *      - Varejo
  */
 router.post("/update-retail", async (req, res, next) => {
   const data = await retailController.updateRetail(req.body);
