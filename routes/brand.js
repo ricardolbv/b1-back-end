@@ -27,4 +27,14 @@ router.post("/create", async (req, res, next) => {
   return res.send({ status: "ok", data: data.data });
 });
 
+router.post("/update-status", async (req, res, next) => {
+  const data = await brandController.updateStatusBrand(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
+
 module.exports = router;

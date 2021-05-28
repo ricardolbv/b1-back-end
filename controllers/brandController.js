@@ -39,31 +39,31 @@ const selectAll = async () => {
   }
 };
 
-const createBrand = async (bradDTO) => {
+const createBrand = async (brandDTO) => {
   try {
     const sqlValidateEmail = await db.query(
-      `SELECT COUNT(email) as qtdUsuario FROM dbo.login WHERE email = '${bradDTO.email}'`
+      `SELECT COUNT(email) as qtdUsuario FROM dbo.login WHERE email = '${brandDTO.email}'`
     );
 
     const validateEmail = JSON.parse(JSON.stringify(sqlValidateEmail[0]))[0]
       .qtdUsuario;
 
     if (validateEmail == 0) {
-      const insertLogin = `INSERT INTO dbo.login (email, senha, url_foto_perfil, id_cargo, created_at, updated_at) VALUES('${bradDTO.email}','${bradDTO.senha}',NULL,'${bradDTO.id_cargo}',GETDATE(), GETDATE())`;
+      const insertLogin = `INSERT INTO dbo.login (email, senha, url_foto_perfil, id_cargo, created_at, updated_at) VALUES('${brandDTO.email}','${brandDTO.senha}',NULL,'${brandDTO.id_cargo}',GETDATE(), GETDATE())`;
 
       const user = await db.query(insertLogin, {
         type: db.QueryTypes.INSERT,
       });
 
       const sqlLogin = await db.query(
-        `SELECT id FROM dbo.login where [email] = '${bradDTO.email}' AND  [senha] = '${bradDTO.senha}'`
+        `SELECT id FROM dbo.login where [email] = '${brandDTO.email}' AND  [senha] = '${brandDTO.senha}'`
       );
 
-      const id_login = JSON.parse(JSON.stringify(sqlLogin[0]))[0].id;
+      const idLogin = JSON.parse(JSON.stringify(sqlLogin[0]))[0].id;
 
       const sqlBrand = `INSERT INTO dbo.marca
       (nome,cnpj,telefone,status,id_cargo,id_login,id_segmento,id_varejo,created_at,updated_at)
-      VALUES('${bradDTO.nome}','${bradDTO.cnpj}','${bradDTO.telefone}',1,${bradDTO.id_cargo},${id_login},${bradDTO.id_segmento},${bradDTO.id_varejo},GETDATE(), GETDATE())`;
+      VALUES('${brandDTO.nome}','${brandDTO.cnpj}','${brandDTO.telefone}',1,${brandDTO.id_cargo},${idLogin},${brandDTO.id_segmento},${brandDTO.id_varejo},GETDATE(), GETDATE())`;
 
       const brand = await db.query(sqlBrand, {
         type: db.QueryTypes.INSERT,
@@ -78,7 +78,31 @@ const createBrand = async (bradDTO) => {
     return { error: error.message };
   }
 };
+
+const updateStatusBrand = async (brandDTO) => {
+  try {
+    const sql = await db.query(
+      `SELECT id FROM dbo.login WHERE email = '${brandDTO.email}'`
+    );
+
+    const idlogin = JSON.parse(JSON.stringify(sql[0]))[0].id;
+
+    const sqlUpdate = `UPDATE dbo.marca
+      SET status = ${brandDTO.status}
+      WHERE id_login = '${idlogin}'`;
+
+    const executeUpdate = await db.query(sqlUpdate, {
+      type: db.QueryTypes.UPDATE,
+    });
+
+    return { data: "Status alterado com sucesso" };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 module.exports = {
   selectAll,
   createBrand,
+  updateStatusBrand,
 };
