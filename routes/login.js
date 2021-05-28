@@ -13,7 +13,7 @@ var loginController = require("../controllers/loginController");
  *      '500':
  *        description: Erro ao retornar todos os usuarios
  *    tags:
- *      - usuarios
+ *      - Usuarios
  */
 router.post("/", async (req, res, next) => {
   const data = await loginController.verifyLogin(req.body);
