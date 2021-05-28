@@ -61,13 +61,13 @@ const createBrand = async (bradDTO) => {
 
       const id_login = JSON.parse(JSON.stringify(sqlLogin[0]))[0].id;
 
-      /*const sqlBrand = `INSERT INTO dbo.marca
+      const sqlBrand = `INSERT INTO dbo.marca
       (nome,cnpj,telefone,status,id_cargo,id_login,id_segmento,id_varejo,created_at,updated_at)
       VALUES('${bradDTO.nome}','${bradDTO.cnpj}','${bradDTO.telefone}',1,${bradDTO.id_cargo},${id_login},${bradDTO.id_segmento},${bradDTO.id_varejo},GETDATE(), GETDATE())`;
 
       const brand = await db.query(sqlBrand, {
         type: db.QueryTypes.INSERT,
-      });*/
+      });
     } else {
       console.log("Existe");
       return { errorEmail: "Email informado já está sendo utilizado" };
