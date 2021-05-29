@@ -143,4 +143,45 @@ router.post("/delete", async (req, res, next) => {
   return res.send({ status: "ok", data: data.data });
 });
 
+/**
+ * @swagger
+ * /brand/update-brand:
+ *  post:
+ *    summary: Atualiza uma marca
+ *    parameters:
+ *      - in: body
+ *        name: Marca
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *            update_nome:
+ *              type: string
+ *            update_cnpj:
+ *              type: string
+ *            update_telefone:
+ *              type: string
+ *            update_id_segmento:
+ *              type: integer
+ *            update_id_varejo:
+ *              type: integer
+ *    responses:
+ *      '200':
+ *        description:  Marca alterada com sucesso
+ *      '500':
+ *        description: Erro ao alterar marca
+ *    tags:
+ *      - Marca
+ */
+router.post("/update-brand", async (req, res, next) => {
+  const data = await brandController.updateBrand(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
+
 module.exports = router;
