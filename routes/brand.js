@@ -116,7 +116,7 @@ router.post("/update-status", async (req, res, next) => {
  * @swagger
  * /brand/delete:
  *  post:
- *    summary: Atualiza o status da marca
+ *    summary: Excluí a marca
  *    parameters:
  *      - in: body
  *        name: Marca
