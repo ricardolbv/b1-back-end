@@ -101,8 +101,67 @@ const updateStatusBrand = async (brandDTO) => {
   }
 };
 
+const deleteBrand = async (brandDTO) => {
+  try {
+    const sqlLogin = await db.query(
+      `SELECT id FROM  dbo.login WHERE  email = '${brandDTO.email}'`
+    );
+
+    const idLogin = JSON.parse(JSON.stringify(sqlLogin[0]))[0].id;
+
+    const deleteBrand = `DELETE FROM dbo.marca  WHERE id_login = '${idLogin}'`;
+
+    await db.query(deleteBrand, {
+      type: db.QueryTypes.DELETE,
+    });
+
+    const deleteLogin = `DELETE FROM dbo.login  WHERE id = '${idLogin}'`;
+
+    await db.query(deleteLogin, {
+      type: db.QueryTypes.DELETE,
+    });
+
+    return { data: "Marca excluída com sucesso" };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+const updateBrand = async (brandDTO) => {
+  try {
+    const sql = await db.query(
+      `SELECT m.[id]
+      FROM [dbo].[marca] m
+      inner join [dbo].[login] l
+      on l.id = m.id_login
+      where l.email = '${brandDTO.email}'`
+    );
+
+    const idBrand = JSON.parse(JSON.stringify(sql[0]))[0].id;
+
+    const sqlBrandUpdate = `UPDATE dbo.marca
+      SET nome = '${brandDTO.update_nome}',
+          cnpj = '${brandDTO.update_cnpj}',
+          telefone = '${brandDTO.update_telefone}',
+          id_segmento = '${brandDTO.update_id_segmento}',
+          id_varejo = '${brandDTO.update_id_varejo}',
+          updated_at = GETDATE()
+      WHERE id = '${idBrand}'`;
+
+    await db.query(sqlBrandUpdate, {
+      type: db.QueryTypes.UPDATE,
+    });
+
+    return { data: "Marca alterada com sucesso" };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 module.exports = {
   selectAll,
   createBrand,
   updateStatusBrand,
+  deleteBrand,
+  updateBrand,
 };
