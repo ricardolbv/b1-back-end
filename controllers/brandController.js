@@ -101,8 +101,35 @@ const updateStatusBrand = async (brandDTO) => {
   }
 };
 
+const deleteBrand = async (brandDTO) => {
+  try {
+    const sqlLogin = await db.query(
+      `SELECT id FROM  dbo.login WHERE  email = '${brandDTO.email}'`
+    );
+
+    const idLogin = JSON.parse(JSON.stringify(sqlLogin[0]))[0].id;
+
+    const deleteBrand = `DELETE FROM dbo.marca  WHERE id_login = '${idLogin}'`;
+
+    await db.query(deleteBrand, {
+      type: db.QueryTypes.DELETE,
+    });
+
+    const deleteLogin = `DELETE FROM dbo.login  WHERE id = '${idLogin}'`;
+
+    await db.query(deleteLogin, {
+      type: db.QueryTypes.DELETE,
+    });
+
+    return { data: "Marca excluída com sucesso" };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 module.exports = {
   selectAll,
   createBrand,
   updateStatusBrand,
+  deleteBrand,
 };

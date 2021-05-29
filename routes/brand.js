@@ -112,4 +112,35 @@ router.post("/update-status", async (req, res, next) => {
   return res.send({ status: "ok", data: data.data });
 });
 
+/**
+ * @swagger
+ * /brand/delete:
+ *  post:
+ *    summary: Atualiza o status da marca
+ *    parameters:
+ *      - in: body
+ *        name: Marca
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
+ *    responses:
+ *      '200':
+ *        description:  Marca excluída com sucesso
+ *      '500':
+ *        description: Erro ao excluir marca
+ *    tags:
+ *      - Marca
+ */
+router.post("/delete", async (req, res, next) => {
+  const data = await brandController.deleteBrand(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
+
 module.exports = router;
