@@ -12,9 +12,12 @@ const selectAll = async () => {
       ,v.nome_fantasia
       ,v.telefone
       ,v.status
+      ,v.id_login
       ,l.email
       ,l.senha
+      ,v.id_cargo
       ,c.descricao as cargo
+      ,v.id_segmento
       ,s.segmento
       ,v.created_at
       ,v.updated_at

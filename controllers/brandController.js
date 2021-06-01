@@ -10,12 +10,15 @@ const selectAll = async () => {
         ,m.[cnpj]
         ,m.[telefone]
         ,m.[status]
+        ,m.id_login
         ,l.email
         ,l.senha
+        ,m.id_cargo
         ,c.descricao as cargo
+        ,m.id_segmento
         ,s.segmento
-        ,v.nome_fantasia as [varejo_responsavel]
         ,m.[id_varejo]
+        ,v.nome_fantasia as [varejo_responsavel]
         ,m.[created_at]
         ,m.[updated_at]
       FROM [dbo].[marca] m
