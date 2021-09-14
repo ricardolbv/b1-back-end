@@ -16,6 +16,7 @@ module.exports = () => {
   router.use("/retail", retailRouter);
   router.use("/profile", profileRouter);
   router.use("/segment", segmentRouter);
+  router.use("/campaign", campaignRouter)
 
   return router;
 };
