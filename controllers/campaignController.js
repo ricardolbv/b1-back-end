@@ -29,3 +29,10 @@ const selectAll = async () => {
       return { error: error.message };
     }
   };
+
+
+
+  module.exports = {
+    selectAll,
+    
+  };
