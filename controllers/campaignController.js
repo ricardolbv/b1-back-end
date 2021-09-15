@@ -11,9 +11,9 @@ const selectAll = async () => {
             ,C.[data_de_inicio]
             ,C.[data_de_fim]
             ,C.[id_marca]
-            ,M.[nome]
+            ,M.[nome] AS nome_marca
             ,M.[id_varejo]
-            ,V.nome_fantasia
+            ,V.nome_fantasia as nome_varejo
             ,C.[created_at]
             ,C.[updated_at]
         FROM [dbo].[campanha] C
@@ -29,6 +29,33 @@ const selectAll = async () => {
       return { error: error.message };
     }
   };
+
+
+  /*const createCampaign = async (campaignDTO) => {
+    try {
+  
+
+
+  
+        const idLogin = JSON.parse(JSON.stringify(sqlLogin[0]))[0].id;
+  
+        const sqlBrand = `INSERT INTO dbo.marca
+        (nome,cnpj,telefone,status,id_cargo,id_login,id_segmento,id_varejo,created_at,updated_at)
+        VALUES('${brandDTO.nome}','${brandDTO.cnpj}','${brandDTO.telefone}',1,${brandDTO.id_cargo},${idLogin},${brandDTO.id_segmento},${brandDTO.id_varejo},GETDATE(), GETDATE())`;
+  
+        const brand = await db.query(sqlBrand, {
+          type: db.QueryTypes.INSERT,
+        });
+      } else {
+        console.log("Existe");
+        return { errorEmail: "Email informado já está sendo utilizado" };
+      }
+  
+      return { data: "Marca cadastrada com sucesso" };
+    } catch (error) {
+      return { error: error.message };
+    }
+  };*/
 
 
 
