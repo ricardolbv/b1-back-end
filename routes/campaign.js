@@ -16,8 +16,8 @@ var campaignController = require("../controllers/campaignController");
  *    tags:
  *      - Campanha
  */
- router.get("/", async (req, res, next) => {
-    const data = await campaignController.selectAll();
+ router.post("/", async (req, res, next) => {
+    const data = await campaignController.selectAll(req.body);
     if (data.error) {
       res.statusCode = 500;
       return res.send({ status: "error", data: data.error });

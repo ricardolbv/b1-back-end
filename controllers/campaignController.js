@@ -1,9 +1,100 @@
 const sequelize = require("sequelize");
 const db = require("../database/db");
 
-const selectAll = async () => {
+const selectAll = async (campaignDTO) => {
     try {
-      const retail = await db.query(
+      const userSql = await db.query(
+        `SELECT c.descricao
+        FROM dbo.login l
+        inner join dbo.cargo c
+        on l.id_cargo = c.id 
+        WHERE l.id = ${campaignDTO.usuarioId}`
+      );
+
+      const cargo = JSON.parse(JSON.stringify(userSql[0]));
+
+
+     
+    if (cargo[0].descricao == "Suporte") {
+        const retail = await db.query(
+          `SELECT 
+              C.[id]
+              ,C.[campanha]
+              ,C.[descricao]
+              ,C.[data_de_inicio]
+              ,C.[data_de_fim]
+              ,C.[id_marca]
+              ,M.[nome] AS nome_marca
+              ,M.[id_varejo]
+              ,V.nome_fantasia as nome_varejo
+              ,C.[created_at]
+              ,C.[updated_at]
+          FROM [dbo].[campanha] C
+          INNER JOIN [dbo].[marca] M
+          ON C.id_marca = M.id
+      
+          INNER JOIN [dbo].[varejo] V
+          ON V.id = M.id_varejo`
+        );
+    } else {
+      if (cargo[0].descricao == "Varejo") {
+        const retail = await db.query(
+          `SELECT 
+              C.[id]
+              ,C.[campanha]
+              ,C.[descricao]
+              ,C.[data_de_inicio]
+              ,C.[data_de_fim]
+              ,C.[id_marca]
+              ,M.[nome] AS nome_marca
+              ,M.[id_varejo]
+              ,V.nome_fantasia as nome_varejo
+              ,C.[created_at]
+              ,C.[updated_at]
+          FROM [dbo].[campanha] C
+          INNER JOIN [dbo].[marca] M
+          ON C.id_marca = M.id
+      
+          INNER JOIN [dbo].[varejo] V
+          ON V.id = M.id_varejo
+          
+          WHERE M.[id_varejo] = ${campaignDTO.usuarioId}`
+
+          
+
+        );
+      } else {
+        if (cargo[0].descricao == "Marca") {
+            const retail = await db.query(
+              `SELECT 
+                  C.[id]
+                  ,C.[campanha]
+                  ,C.[descricao]
+                  ,C.[data_de_inicio]
+                  ,C.[data_de_fim]
+                  ,C.[id_marca]
+                  ,M.[nome] AS nome_marca
+                  ,M.[id_varejo]
+                  ,V.nome_fantasia as nome_varejo
+                  ,C.[created_at]
+                  ,C.[updated_at]
+              FROM [dbo].[campanha] C
+              INNER JOIN [dbo].[marca] M
+              ON C.id_marca = M.id
+          
+              INNER JOIN [dbo].[varejo] V
+              ON V.id = M.id_varejo
+              
+              WHERE M.[id_marca] = ${campaignDTO.usuarioId}`
+            );
+
+        }
+      }
+    }
+
+
+      
+      /*const retail = await db.query(
         `SELECT 
             C.[id]
             ,C.[campanha]
@@ -22,9 +113,9 @@ const selectAll = async () => {
     
         INNER JOIN [dbo].[varejo] V
         ON V.id = M.id_varejo`
-      );
+      );*/
   
-      return retail;
+      return cargo[0].descricao//retail;
     } catch (error) {
       return { error: error.message };
     }
