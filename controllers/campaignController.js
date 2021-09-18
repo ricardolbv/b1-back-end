@@ -13,10 +13,10 @@ const selectAll = async (campaignDTO) => {
 
       const cargo = JSON.parse(JSON.stringify(userSql[0]));
 
-
+      var retail = {};
      
     if (cargo[0].descricao == "Suporte") {
-        const retail = await db.query(
+        retail = await db.query(
           `SELECT 
               C.[id]
               ,C.[campanha]
@@ -38,7 +38,7 @@ const selectAll = async (campaignDTO) => {
         );
     } else {
       if (cargo[0].descricao == "Varejo") {
-        const retail = await db.query(
+        retail = await db.query(
           `SELECT 
               C.[id]
               ,C.[campanha]
@@ -58,14 +58,14 @@ const selectAll = async (campaignDTO) => {
           INNER JOIN [dbo].[varejo] V
           ON V.id = M.id_varejo
           
-          WHERE M.[id_varejo] = ${campaignDTO.usuarioId}`
+          WHERE V.id_login = ${campaignDTO.usuarioId}`
 
           
 
         );
       } else {
         if (cargo[0].descricao == "Marca") {
-            const retail = await db.query(
+            retail = await db.query(
               `SELECT 
                   C.[id]
                   ,C.[campanha]
@@ -85,37 +85,14 @@ const selectAll = async (campaignDTO) => {
               INNER JOIN [dbo].[varejo] V
               ON V.id = M.id_varejo
               
-              WHERE M.[id_marca] = ${campaignDTO.usuarioId}`
+              WHERE M.[id_login] = ${campaignDTO.usuarioId}`
             );
 
         }
       }
     }
 
-
-      
-      /*const retail = await db.query(
-        `SELECT 
-            C.[id]
-            ,C.[campanha]
-            ,C.[descricao]
-            ,C.[data_de_inicio]
-            ,C.[data_de_fim]
-            ,C.[id_marca]
-            ,M.[nome] AS nome_marca
-            ,M.[id_varejo]
-            ,V.nome_fantasia as nome_varejo
-            ,C.[created_at]
-            ,C.[updated_at]
-        FROM [dbo].[campanha] C
-        INNER JOIN [dbo].[marca] M
-        ON C.id_marca = M.id
-    
-        INNER JOIN [dbo].[varejo] V
-        ON V.id = M.id_varejo`
-      );*/
-  
-      return cargo[0].descricao//retail;
+      return retail;
     } catch (error) {
       return { error: error.message };
     }
