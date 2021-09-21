@@ -99,31 +99,38 @@ const selectAll = async (campaignDTO) => {
   };
 
 
-  /*const createCampaign = async (campaignDTO) => {
+  const createCampaign = async (campaignDTO) => {
     try {
   
+      const insertCampaign = 
+      `
+      INSERT INTO [dbo].[campanha]
+            ([campanha]
+            ,[descricao]
+            ,[data_de_inicio]
+            ,[data_de_fim]
+            ,[id_marca]
+            ,[created_at]
+            ,[updated_at])
+      VALUES
+            ('${campaignDTO.campanha}'
+            ,'${campaignDTO.descricao}'
+            ,'${campaignDTO.data_de_inicio}'
+            ,'${campaignDTO.data_de_fim}'
+            ,'${campaignDTO.id_marca}'
+            ,GETDATE()
+            ,GETDATE())
+      `;
 
+            const user = await db.query(insertLogin, {
+              type: db.QueryTypes.INSERT,
+            });
 
-  
-        const idLogin = JSON.parse(JSON.stringify(sqlLogin[0]))[0].id;
-  
-        const sqlBrand = `INSERT INTO dbo.marca
-        (nome,cnpj,telefone,status,id_cargo,id_login,id_segmento,id_varejo,created_at,updated_at)
-        VALUES('${brandDTO.nome}','${brandDTO.cnpj}','${brandDTO.telefone}',1,${brandDTO.id_cargo},${idLogin},${brandDTO.id_segmento},${brandDTO.id_varejo},GETDATE(), GETDATE())`;
-  
-        const brand = await db.query(sqlBrand, {
-          type: db.QueryTypes.INSERT,
-        });
-      } else {
-        console.log("Existe");
-        return { errorEmail: "Email informado já está sendo utilizado" };
-      }
-  
-      return { data: "Marca cadastrada com sucesso" };
+      return { data: "Campanha cadastrada com sucesso" };
     } catch (error) {
       return { error: error.message };
     }
-  };*/
+  };
 
 
 
