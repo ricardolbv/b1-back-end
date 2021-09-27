@@ -7,13 +7,23 @@ var loginController = require("../controllers/loginController");
  * /login:
  *  post:
  *    summary: Valida usuario
- *    responses:
- *      '200':
- *        description: Retorna todos os usuarios do sistema
- *      '500':
- *        description: Erro ao retornar todos os usuarios
  *    tags:
  *      - Usuarios
+ *    parameters:
+ *      - in: body
+ *        name: Login
+ *        schema:
+ *        type: object
+ *        properties:
+ *          email:
+ *            type: string
+ *          senha: 
+ *            type: string
+ *    responses:
+ *      '200':
+ *        description: ok
+ *      '500':
+ *        description: Erro ao validar usuario
  */
 router.post("/", async (req, res, next) => {
   const data = await loginController.verifyLogin(req.body);
