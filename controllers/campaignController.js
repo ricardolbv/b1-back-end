@@ -122,7 +122,7 @@ const selectAll = async (campaignDTO) => {
             ,GETDATE())
       `;
 
-            const user = await db.query(insertLogin, {
+            const user = await db.query(insertCampaign , {
               type: db.QueryTypes.INSERT,
             });
 
@@ -136,5 +136,5 @@ const selectAll = async (campaignDTO) => {
 
   module.exports = {
     selectAll,
-    
+    createCampaign,
   };
