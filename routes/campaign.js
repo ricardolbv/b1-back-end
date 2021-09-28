@@ -28,7 +28,7 @@ var campaignController = require("../controllers/campaignController");
   });
 
 
-  /**
+/**
  * @swagger
  * /campanha/create:
  *  post:
@@ -39,23 +39,15 @@ var campaignController = require("../controllers/campaignController");
  *        schema:
  *          type: object
  *          properties:
- *            email:
+ *            campanha:
  *              type: string
- *            senha:
+ *            descricao:
  *              type: string
- *            nome:
- *              type: string
- *            cnpj:
- *              type: string
- *            telefone:
- *              type: string
- *            status:
- *              type: integer
- *            id_cargo:
- *              type: integer
- *            id_segmento:
- *              type: integer
- *            id_varejo:
+ *            data_de_inicio:
+ *              type: datetime
+ *            data_de_fim:
+ *              type: datetime
+ *            id_marca:
  *              type: integer
  *    responses:
  *      '200':
@@ -68,14 +60,11 @@ var campaignController = require("../controllers/campaignController");
  *      - Marca
  */
 router.post("/create", async (req, res, next) => {
-  const data = await brandController.createBrand(req.body);
+  const data = await campaignController.createCampaign(req.body);
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });
-  }
-  if (data.errorEmail) {
-    res.statusCode = 400;
-    return res.send({ status: "error", data: data.errorEmail });
+  
   }
   res.statusCode = 200;
   return res.send({ status: "ok", data: data.data });
