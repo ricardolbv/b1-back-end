@@ -133,6 +133,16 @@ const selectAll = async (campaignDTO) => {
   };
 
 
+  const alterCampaign = async (campaignDTO) => {
+    try {
+  
+     
+      return { data: "Campanha cadastrada com sucesso" };
+    } catch (error) {
+      return { error: error.message };
+    }
+  };
+
 
   module.exports = {
     selectAll,

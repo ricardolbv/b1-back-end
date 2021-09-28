@@ -51,11 +51,9 @@ var campaignController = require("../controllers/campaignController");
  *              type: integer
  *    responses:
  *      '200':
- *        description:  Marca cadastrada com sucesso
- *      '400':
- *        description: Email informado já está sendo utilizado
+ *        description:  Campanha cadastrada com sucesso
  *      '500':
- *        description: Erro ao cadastrar marca
+ *        description: Erro ao cadastrar campanha
  *    tags:
  *      - Marca
  */
