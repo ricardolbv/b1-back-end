@@ -133,11 +133,25 @@ const selectAll = async (campaignDTO) => {
   };
 
 
-  const alterCampaign = async (campaignDTO) => {
+  const updateCampaign = async (campaignDTO) => {
     try {
-  
+   
+      const sqlCampaignUpdate = `update [dbo].[campanha]
+      set 
+       [campanha] = '${campaignDTO.updateCampanha}',
+       [descricao] = '${campaignDTO.updateDescricao}',
+       [data_de_inicio] = '${campaignDTO.updateDataInicio}',
+       [data_de_fim] = '${campaignDTO.updateDataFim}',
+       [id_marca] = '${campaignDTO.updateIdMarca}',
+       [updated_at] = getdate()
+      where [id] = '${campaignDTO.idCampanha}'`
      
-      return { data: "Campanha cadastrada com sucesso" };
+      await db.query(sqlCampaignUpdate, {
+        type: db.QueryTypes.UPDATE,
+      });
+  
+       
+      return { data: "Campanha alterada com sucesso" };
     } catch (error) {
       return { error: error.message };
     }
@@ -147,4 +161,5 @@ const selectAll = async (campaignDTO) => {
   module.exports = {
     selectAll,
     createCampaign,
+    updateCampaign,
   };

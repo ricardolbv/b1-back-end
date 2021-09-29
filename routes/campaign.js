@@ -69,4 +69,17 @@ router.post("/create", async (req, res, next) => {
 });
 
 
-  module.exports = router;
+
+router.post("/update", async (req, res, next) => {
+  const data = await campaignController.updateCampaign(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
+
+
+module.exports = router;
