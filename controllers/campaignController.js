@@ -158,6 +158,19 @@ const selectAll = async (campaignDTO) => {
   };
 
 
+  
+  const deleteCampaign = async (campaignDTO) => {
+    try {
+   
+     
+       
+      return { data: "Campanha deletada com sucesso!" };
+    } catch (error) {
+      return { error: error.message };
+    }
+  };
+
+
   module.exports = {
     selectAll,
     createCampaign,
