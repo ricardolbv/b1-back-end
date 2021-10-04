@@ -28,7 +28,7 @@ var loginController = require("../controllers/loginController");
 router.post("/", async (req, res, next) => {
   const data = await loginController.verifyLogin(req.body);
   if (data.error) {
-    res.statusCode = 500;
+    res.statusCode = 401;
     res.send({ status: "error", data: "Erro ao validar usuario" });
   }
 
