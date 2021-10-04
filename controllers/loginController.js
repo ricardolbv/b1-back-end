@@ -21,6 +21,7 @@ const verifyLogin = async (req) => {
       {
         usuarioId: data[0].id,
         cargoId: data[0].id_cargo,
+        email: data[0].email,
       },
       secret,
       { expiresIn: 1000 }
