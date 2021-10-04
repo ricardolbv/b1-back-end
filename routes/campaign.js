@@ -30,7 +30,7 @@ var campaignController = require("../controllers/campaignController");
 
 /**
  * @swagger
- * /campanha/create:
+ * /campaign/create:
  *  post:
  *    summary: Cadastra uma campanha
  *    parameters:
@@ -67,6 +67,41 @@ router.post("/create", async (req, res, next) => {
   res.statusCode = 200;
   return res.send({ status: "ok", data: data.data });
 });
+
+
+/**
+ * @swagger
+ * /campaign/delete:
+ *  post:
+ *    summary: Excluí a campanha selecionada
+ *    parameters:
+ *      - in: body
+ *        name: Varejo
+ *        schema:
+ *          type: object
+ *          properties:
+ *            idCampanha:
+ *              type: integer
+ *    responses:
+ *      '200':
+ *        description: Campanha excluída com sucesso
+ *      '500':
+ *        description: Erro ao excluir campanha
+ *    tags:
+ *      - Campanha
+ */
+ router.post("/delete", async (req, res, next) => {
+  const data = await campaignController.deleteCampaign(req.body);
+  if (data.error) {
+    res.statusCode = 500;
+    return res.send({ status: "error", data: data.error });
+  }
+  res.statusCode = 200;
+  return res.send({ status: "ok", data: data.data });
+});
+
+
+
 
 
 

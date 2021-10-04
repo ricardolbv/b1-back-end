@@ -161,8 +161,11 @@ const selectAll = async (campaignDTO) => {
   
   const deleteCampaign = async (campaignDTO) => {
     try {
-   
+      const deleteCampaign = `DELETE FROM[dbo].[campanha] WHERE id = '${idCampanha}'`;
      
+      const executeDeleteCampaign = await db.query(deleteCampaign, {
+        type: db.QueryTypes.DELETE,
+      });
        
       return { data: "Campanha deletada com sucesso!" };
     } catch (error) {
