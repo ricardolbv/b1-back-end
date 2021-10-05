@@ -29,7 +29,7 @@ router.post("/", async (req, res, next) => {
   const data = await loginController.verifyLogin(req.body);
   if (data.error) {
     res.statusCode = 401;
-    res.send({ status: "error", data: "Erro ao validar usuario" });
+    res.send({ status: "error", data: data.error });
   }
 
   res.statusCode = 200;

@@ -10,6 +10,7 @@ const verifyLogin = async (req) => {
         `select * from dbo.login where email = '${email}'`
       );
       var data = JSON.parse(JSON.stringify(retorno[0]));
+      console.log(data);
 
       if (!data[0] || data[0].senha != senha)
         return {error: 'Usuário inexistente ou senha inválida'};
