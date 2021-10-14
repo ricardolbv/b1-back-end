@@ -3,15 +3,21 @@ const db = require("../database/db");
 
 const selectAll = async (campaignDTO) => {
     try {
+      //console.log("______CONTROLER_______");
+      //console.log(campaignDTO);
+      //console.log(campaignDTO[0]);
+
+
       const userSql = await db.query(
         `SELECT c.descricao
         FROM dbo.login l
         inner join dbo.cargo c
         on l.id_cargo = c.id 
-        WHERE l.id = ${campaignDTO.usuarioId}`
+        WHERE l.id = ${campaignDTO}`
       );
-
-      const cargo = JSON.parse(JSON.stringify(userSql[0]));
+       
+      
+     const cargo = JSON.parse(JSON.stringify(userSql[0]));
 
       var retail = {};
      
@@ -58,7 +64,7 @@ const selectAll = async (campaignDTO) => {
           INNER JOIN [dbo].[varejo] V
           ON V.id = M.id_varejo
           
-          WHERE V.id_login = ${campaignDTO.usuarioId}`
+          WHERE V.id_login = ${campaignDTO/*.usuarioId*/}`
 
           
 
@@ -85,7 +91,7 @@ const selectAll = async (campaignDTO) => {
               INNER JOIN [dbo].[varejo] V
               ON V.id = M.id_varejo
               
-              WHERE M.[id_login] = ${campaignDTO.usuarioId}`
+              WHERE M.[id_login] = ${campaignDTO/*.usuarioId*/}`
             );
 
         }
