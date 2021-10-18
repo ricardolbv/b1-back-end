@@ -1,7 +1,7 @@
 const db = require("../database/db");
 const jwt = require("jsonwebtoken");
 const secret = "b1";
-
+// VERIFICAR STATUS LOGIN
 const verifyLogin = async (req) => {
   try{
       var email = req.email;
