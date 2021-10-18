@@ -25,15 +25,15 @@ var campaignController = require("../controllers/campaignController");
  */
  router.get("/:usuarioId", async (req, res, next) => {
 
-    /*if(!req.params.usuarioId){
+    if(!req.params.usuarioId){
       res.statusCode = 404;
       return res.send({ status: "Id do usuário não fornecido"});
-    }*/
+    }
     
     console.log(req.params.usuarioId);
     const data = await campaignController.selectAll(req.params.usuarioId);
     
-   /* if(data == null){
+    if(data == null){
       res.statusCode = 404;
       return res.send({ status: "Campanha não encontrada"});
     }
@@ -41,7 +41,7 @@ var campaignController = require("../controllers/campaignController");
     if (data.error) {
       res.statusCode = 500;
       return res.send({ status: "error", data: data.error });
-    }*/
+    }
   
     res.statusCode = 200;
     return res.send({ status: "ok", data: data });
