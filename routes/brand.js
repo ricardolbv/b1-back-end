@@ -10,13 +10,31 @@ var brandController = require("../controllers/brandController");
  *    responses:
  *      '200':
  *        description: Retornado todas as marcas do sistema
+ *      '404':
+ *        description: Id do usuário não fornecido
  *      '500':
  *        description: Erro ao retornar todas as marcas
+ *    parameters:
+ *      - in: path
+ *        name: usuarioId
+ *        schema:
+ *          type: integer
  *    tags:
  *      - Marca
  */
-router.get("/", async (req, res, next) => {
-  const data = await brandController.selectAll();
+router.get("/:usuarioId", async (req, res, next) => {
+
+  if(!req.params.usuarioId){
+    res.statusCode = 404;
+    return res.send({ status: "Id do usuário não fornecido"});
+  }
+  const data = await brandController.selectAll(req.params.usuarioId);
+
+  if(data == null){
+    res.statusCode = 404;
+    return res.send({ status: "Marca não encontrada"});
+  }
+
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });

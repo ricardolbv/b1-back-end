@@ -3,10 +3,6 @@ const db = require("../database/db");
 
 const selectAll = async (campaignDTO) => {
     try {
-      //console.log("______CONTROLER_______");
-      //console.log(campaignDTO);
-      //console.log(campaignDTO[0]);
-
 
       const userSql = await db.query(
         `SELECT c.descricao
@@ -19,10 +15,10 @@ const selectAll = async (campaignDTO) => {
       
      const cargo = JSON.parse(JSON.stringify(userSql[0]));
 
-      var retail = {};
+      var campaign = {};
      
     if (cargo[0].descricao == "Suporte") {
-        retail = await db.query(
+       campaign = await db.query(
           `SELECT 
               C.[id]
               ,C.[campanha]
@@ -44,7 +40,7 @@ const selectAll = async (campaignDTO) => {
         );
     } else {
       if (cargo[0].descricao == "Varejo") {
-        retail = await db.query(
+        campaign = await db.query(
           `SELECT 
               C.[id]
               ,C.[campanha]
@@ -71,7 +67,7 @@ const selectAll = async (campaignDTO) => {
         );
       } else {
         if (cargo[0].descricao == "Marca") {
-            retail = await db.query(
+          campaign = await db.query(
               `SELECT 
                   C.[id]
                   ,C.[campanha]
@@ -98,7 +94,7 @@ const selectAll = async (campaignDTO) => {
       }
     }
 
-      return retail;
+      return campaign;
     } catch (error) {
       return { error: error.message };
     }

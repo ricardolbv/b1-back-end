@@ -24,13 +24,14 @@ var campaignController = require("../controllers/campaignController");
  *      - Campanha
  */
  router.get("/:usuarioId", async (req, res, next) => {
+   console.log(req.params.usuarioId);
+
 
     if(!req.params.usuarioId){
       res.statusCode = 404;
       return res.send({ status: "Id do usuário não fornecido"});
     }
-    
-    console.log(req.params.usuarioId);
+  
     const data = await campaignController.selectAll(req.params.usuarioId);
     
     if(data == null){
