@@ -5,7 +5,7 @@ var campaignController = require("../controllers/campaignController");
 
 /**
  * @swagger
- * /campaign/{id}:
+ * /campaign/{usuarioId}:
  *  get:
  *    summary: Retorna todos as campanhas
  *    responses:
