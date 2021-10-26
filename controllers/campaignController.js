@@ -60,7 +60,7 @@ const selectAll = async (campaignDTO) => {
           INNER JOIN [dbo].[varejo] V
           ON V.id = M.id_varejo
           
-          WHERE V.id_login = ${campaignDTO/*.usuarioId*/}`
+          WHERE V.id_login = ${campaignDTO}`
 
           
 
@@ -87,7 +87,7 @@ const selectAll = async (campaignDTO) => {
               INNER JOIN [dbo].[varejo] V
               ON V.id = M.id_varejo
               
-              WHERE M.[id_login] = ${campaignDTO/*.usuarioId*/}`
+              WHERE M.[id_login] = ${campaignDTO}`
             );
 
         }

@@ -3,7 +3,22 @@ const db = require("../database/db");
 
 const selectAll = async () => {
   try {
-    const retail = await db.query(
+
+
+      
+    if (cargo[0].descricao == "Suporte") {
+  
+   } else {
+     if (cargo[0].descricao == "Varejo") {
+      
+     } else {
+       if (cargo[0].descricao == "Marca") {
+
+       }
+     }
+   }
+
+    /*const retail = await db.query(
       `SELECT 
       v.id
       ,v.inscricao
@@ -31,7 +46,7 @@ const selectAll = async () => {
       
       inner join dbo.segmento s
       on s.id = v.id_segmento`
-    );
+    );*/
 
     return retail;
   } catch (error) {
