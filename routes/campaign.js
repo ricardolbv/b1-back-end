@@ -24,8 +24,6 @@ var campaignController = require("../controllers/campaignController");
  *      - Campanha
  */
  router.get("/:usuarioId", async (req, res, next) => {
-   console.log(req.params.usuarioId);
-
 
     if(!req.params.usuarioId){
       res.statusCode = 404;

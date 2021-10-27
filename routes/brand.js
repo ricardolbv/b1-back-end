@@ -4,7 +4,7 @@ var brandController = require("../controllers/brandController");
 
 /**
  * @swagger
- * /brand:
+ * /brand/{usuarioId}:
  *  get:
  *    summary: Retorna todos as marcas
  *    responses:

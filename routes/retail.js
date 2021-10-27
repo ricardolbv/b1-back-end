@@ -4,19 +4,37 @@ var retailController = require("../controllers/retailController");
 
 /**
  * @swagger
- * /retail:
+ * /retail/{usuarioId}:
  *  get:
  *    summary: Retorna todos os varejos
  *    responses:
  *      '200':
  *        description: Retorna todos as varejos do sistema
+ *      '404':
+ *        description: Id do usuário não fornecido
  *      '500':
  *        description: Erro ao retornar todos os varejos
+ *    parameters:
+ *      - in: path
+ *        name: usuarioId
+ *        schema:
+ *          type: integer
  *    tags:
  *      - Varejo
  */
-router.get("/", async (req, res, next) => {
-  const data = await retailController.selectAll();
+router.get("/:usuarioId", async (req, res, next) => {
+  if(!req.params.usuarioId){
+    res.statusCode = 404;
+    return res.send({ status: "Id do usuário não fornecido"});
+  }
+
+  const data = await retailController.selectAll(req.params.usuarioId);
+  
+  if(data == null){
+    res.statusCode = 404;
+    return res.send({ status: "Campanha não encontrada"});
+  }
+
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });

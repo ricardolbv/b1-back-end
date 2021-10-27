@@ -1,53 +1,93 @@
 const sequelize = require("sequelize");
 const db = require("../database/db");
 
-const selectAll = async () => {
+const selectAll = async (retailDTO) => {
   try {
 
 
-      
+    const userSql = await db.query(
+      `SELECT c.descricao
+      FROM dbo.login l
+      inner join dbo.cargo c
+      on l.id_cargo = c.id 
+      WHERE l.id = ${retailDTO}`
+    );
+
+    const cargo = JSON.parse(JSON.stringify(userSql[0]));
+    
+    var retail = {};
+    
     if (cargo[0].descricao == "Suporte") {
-  
+      retail = await db.query(
+        `
+          SELECT 
+              V.[id]
+              ,V.[inscricao]
+              ,V.[cnpj]
+              ,V.[razao_social]
+              ,V.[nome_fantasia]
+              ,V.[telefone]
+              ,V.[status]
+              ,V.[id_cargo]
+            ,c.[descricao]
+              ,V.[id_login]
+            ,l.email
+              ,l.senha
+              ,V.[id_segmento]
+            ,s.segmento
+              ,V.[created_at]
+              ,V.[updated_at]
+          FROM [dbo].[varejo] V
+
+          inner join dbo.[login] l
+          on l.id = v.id_login
+
+          inner join dbo.cargo c
+          on c.id = v.id_cargo
+
+          inner join dbo.segmento s
+          on s.id = v.id_segmento`
+      );
    } else {
      if (cargo[0].descricao == "Varejo") {
-      
-     } else {
-       if (cargo[0].descricao == "Marca") {
+      retail = await db.query(
+        `
+          SELECT 
+              V.[id]
+              ,V.[inscricao]
+              ,V.[cnpj]
+              ,V.[razao_social]
+              ,V.[nome_fantasia]
+              ,V.[telefone]
+              ,V.[status]
+              ,V.[id_cargo]
+              ,c.[descricao]
+              ,V.[id_login]
+              ,l.email
+              ,l.senha
+              ,V.[id_segmento]
+            ,s.segmento
+              ,V.[created_at]
+              ,V.[updated_at]
+          FROM [dbo].[varejo] V
 
-       }
-     }
+          inner join dbo.[login] l
+          on l.id = v.id_login
+
+          inner join dbo.cargo c
+          on c.id = v.id_cargo
+
+          inner join dbo.segmento s
+          on s.id = v.id_segmento
+          
+          where V.[id_login] = ${retailDTO}`
+
+          
+      );
+     } 
    }
 
-    /*const retail = await db.query(
-      `SELECT 
-      v.id
-      ,v.inscricao
-      ,v.cnpj
-      ,v.razao_social
-      ,v.nome_fantasia
-      ,v.telefone
-      ,v.status
-      ,v.id_login
-      ,l.email
-      ,l.senha
-      ,v.id_cargo
-      ,c.descricao as cargo
-      ,v.id_segmento
-      ,s.segmento
-      ,v.created_at
-      ,v.updated_at
-      FROM dbo.varejo v
-        
-      inner join dbo.login l
-      on l.id = v.id_login
-      
-      inner join dbo.cargo c
-      on c.id = v.id_cargo
-      
-      inner join dbo.segmento s
-      on s.id = v.id_segmento`
-    );*/
-
+   
     return retail;
   } catch (error) {
     return { error: error.message };
