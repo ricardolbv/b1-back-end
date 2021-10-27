@@ -9,8 +9,33 @@ const verifyLogin = async (req) => {
       var retorno = await db.query(
         `select * from dbo.login where email = '${email}'`
       );
+
       var data = JSON.parse(JSON.stringify(retorno[0]));
-      console.log(data);
+      const cargoSql = await db.query(
+        `SELECT 
+           c.[descricao]
+        FROM [dbo].[cargo] c
+        WHERE c.id = ${data[0].id_cargo}`
+      );
+      const cargo = JSON.parse(JSON.stringify(cargoSql[0]));
+
+      console.log(cargo);
+
+
+      if (cargo[0].descricao == "Suporte") {
+      
+      } 
+      else {
+        if (cargo[0].descricao == "Varejo") {
+          
+            
+        } else {
+          if (cargo[0].descricao == "Marca") {
+           
+          }
+        }
+      }
+    
 
       if (!data[0] || data[0].senha != senha)
         return {error: 'Usuário inexistente ou senha inválida'};
