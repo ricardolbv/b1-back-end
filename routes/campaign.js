@@ -95,7 +95,7 @@ router.post("/create", async (req, res, next) => {
  *    summary: Excluí a campanha selecionada
  *    parameters:
  *      - in: body
- *        name: Varejo
+ *        name: Campanha
  *        schema:
  *          type: object
  *          properties:

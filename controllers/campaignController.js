@@ -163,7 +163,7 @@ const selectAll = async (campaignDTO) => {
   
   const deleteCampaign = async (campaignDTO) => {
     try {
-      const deleteCampaign = `DELETE FROM[dbo].[campanha] WHERE id = '${idCampanha}'`;
+      const deleteCampaign = `DELETE FROM [dbo].[campanha] WHERE id = '${campaignDTO.idCampanha}'`;
      
       const executeDeleteCampaign = await db.query(deleteCampaign, {
         type: db.QueryTypes.DELETE,
@@ -180,4 +180,5 @@ const selectAll = async (campaignDTO) => {
     selectAll,
     createCampaign,
     updateCampaign,
+    deleteCampaign
   };
