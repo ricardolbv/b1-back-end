@@ -163,13 +163,30 @@ const selectAll = async (campaignDTO) => {
   
   const deleteCampaign = async (campaignDTO) => {
     try {
-      const deleteCampaign = `DELETE FROM [dbo].[campanha] WHERE id = '${campaignDTO.idCampanha}'`;
-     
-      const executeDeleteCampaign = await db.query(deleteCampaign, {
-        type: db.QueryTypes.DELETE,
-      });
-       
-      return { data: "Campanha deletada com sucesso!" };
+      
+     const campaign = await db.query(
+        `SELECT 
+           COUNT(1) AS quant
+        FROM [dbo].[campanha] 
+        WHERE id = '${campaignDTO.idCampanha}'`
+      );
+      const count = (JSON.parse(JSON.stringify(campaign[0]))[0].quant);
+    
+      if(count == 0){
+        console.log("AQUI PORRA");
+        return { error: "Campanha não existe!" };
+      }
+      else{
+        const deleteCampaign = `DELETE FROM [dbo].[campanha] WHERE id = '${campaignDTO.idCampanha}'`;
+      
+        const executeDeleteCampaign = await db.query(deleteCampaign, {
+          type: db.QueryTypes.DELETE,
+        });
+        
+        return { data: "Campanha deletada com sucesso!" };
+      }
+
+  
     } catch (error) {
       return { error: error.message };
     }
