@@ -4,75 +4,68 @@ const secret = "b1";
 // VERIFICAR STATUS LOGIN
 const verifyLogin = async (req) => {
   try{
-      var email = req.email;
-      var senha = req.senha;
-      var retorno = await db.query(
-        `select * 
-        from dbo.login 
-        where email = '${email}'
-        and senha = '${senha}''`
-      );
-
-      var data = JSON.parse(JSON.stringify(retorno[0]));
-
- 
-
-
-     /* const cargoSql = await db.query(
-        `SELECT 
-           c.[descricao]
-        FROM [dbo].[cargo] c
-        WHERE c.id = ${data[0].id_cargo}`
-      );
-
-      const cargo = JSON.parse(JSON.stringify(cargoSql[0]));
-
-
-
-      const user = {};
-
-      if (cargo[0].descricao == "Suporte") {
-        user = await db.query(
-          `SELECT 
-          [status]
-          FROM [dbo].[suporte]
-          WHERE [id_login] = ${data[0].id}`
-        );
-      } 
-      else {
-        if (cargo[0].descricao == "Varejo") {
-          
-            
-        } else {
-          if (cargo[0].descricao == "Marca") {
-           
-          }
-        }
-      }
-      
-
-      user = JSON.parse(JSON.stringify(user[0]));
-
-      console.log("AQUII===================> ",user[0].status);
-
-      
-      if(!user[0].status){
-
-         return {error2: 'Usuário inexistente ou senha inválida'};
-      }*/
-
+    var email = req.email;
+    var senha = req.senha;
+    var retorno = await db.query(
+      `select l.*, c.descricao
+      from dbo.login l
+       inner join dbo.cargo c 
+       on l.id_cargo = c.id 
+       where email = '${email}'`
+    );
+    var data = JSON.parse(JSON.stringify(retorno[0]));
     
-      var token = jwt.sign({
-            usuarioId: data[0].id,
-            cargoId: data[0].id_cargo,
-            email: data[0].email,
-      },
-      secret,
-          { expiresIn: 1000 }
+    var status = {};
+    if (data[0].descricao == "Suporte") {
+      console.log("SUPORTE");
+      status = await db.query(
+        `SELECT [status]
+        FROM [dbo].[suporte]
+        where id_login = '${data[0].id}'`
       );
-        
-      return token;
+      
 
+    }
+    if (data[0].descricao == "Varejo") {
+  
+      status = await db.query(
+        `SELECT [status]
+        FROM [dbo].[varejo]
+        where id_login = '${data[0].id}'`
+      );
+      console.log("VAREJO");
+    }
+    if (data[0].descricao == "Marca") {
+      console.log("MARCA");
+
+      status = await db.query(
+        `SELECT [status]
+        FROM [dbo].[marca]
+        where id_login = '${data[0].id}'`
+      );
+    }
+
+    var dataStatus = JSON.parse(JSON.stringify(status[0]));
+    console.log(dataStatus[0].status);
+
+   if (!dataStatus[0].status){
+      return {error: 'Usuário sem acesso!'};
+     
+    }
+
+    if (!data[0] || data[0].senha != senha){
+      return {error: 'Usuário inexistente ou senha inválida'};
+     
+    }
+    var token = jwt.sign({
+          usuarioId: data[0].id,
+          cargoId: data[0].id_cargo,
+          email: data[0].email,
+        },
+        secret,
+        { expiresIn: 1000 }
+      );
+      return token;
       
     } catch(error){
       return {error: 'Usuário inexistente ou senha inválida'};
