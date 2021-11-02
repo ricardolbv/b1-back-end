@@ -25,16 +25,17 @@ var loginController = require("../controllers/loginController");
  *    tags:
  *      - Auth
  */
-router.post("/", async (req, res, next) => {
+router.post("/", async (req, res) => {
   const data = await loginController.verifyLogin(req.body);
 
   if (data.error) {
     res.statusCode = 401;
     res.send({ status: "error", data: data.error });
   }
-
-  res.statusCode = 200;
-  res.send({ status: "ok", data: data });
+  else{
+     res.statusCode = 200;
+    res.send({ status: "ok", data: data });
+  }
 });
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const db = require("../database/db");
 const jwt = require("jsonwebtoken");
 const secret = "b1";
-// VERIFICAR STATUS LOGIN
+
 const verifyLogin = async (req) => {
   try{
     var email = req.email;
@@ -47,8 +47,19 @@ const verifyLogin = async (req) => {
 
     var dataStatus = JSON.parse(JSON.stringify(status[0]));
     console.log(dataStatus[0].status);
+    console.log("aqui porra ====> ",data[0].id,data[0].id_cargo,data[0].email);
+ 
+    var token = jwt.sign({
+      usuarioId: data[0].id,
+      cargoId: data[0].id_cargo,
+      email: data[0].email,
+    },
+    secret,
+    { expiresIn: 1000 }
+    );
 
    if (!dataStatus[0].status){
+    console.log("aquiiiii");
       return {error: 'Usuário sem acesso!'};
      
     }
@@ -57,17 +68,11 @@ const verifyLogin = async (req) => {
       return {error: 'Usuário inexistente ou senha inválida'};
      
     }
-    var token = jwt.sign({
-          usuarioId: data[0].id,
-          cargoId: data[0].id_cargo,
-          email: data[0].email,
-        },
-        secret,
-        { expiresIn: 1000 }
-      );
+
       return token;
       
     } catch(error){
+      console.log("PEDRAO MASSA")
       return {error: 'Usuário inexistente ou senha inválida'};
     }
 };
