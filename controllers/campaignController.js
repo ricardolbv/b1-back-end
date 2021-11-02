@@ -3,10 +3,6 @@ const db = require("../database/db");
 
 const selectAll = async (campaignDTO) => {
     try {
-      //console.log("______CONTROLER_______");
-      //console.log(campaignDTO);
-      //console.log(campaignDTO[0]);
-
 
       const userSql = await db.query(
         `SELECT c.descricao
@@ -19,10 +15,10 @@ const selectAll = async (campaignDTO) => {
       
      const cargo = JSON.parse(JSON.stringify(userSql[0]));
 
-      var retail = {};
+      var campaign = {};
      
     if (cargo[0].descricao == "Suporte") {
-        retail = await db.query(
+       campaign = await db.query(
           `SELECT 
               C.[id]
               ,C.[campanha]
@@ -44,7 +40,7 @@ const selectAll = async (campaignDTO) => {
         );
     } else {
       if (cargo[0].descricao == "Varejo") {
-        retail = await db.query(
+        campaign = await db.query(
           `SELECT 
               C.[id]
               ,C.[campanha]
@@ -64,14 +60,14 @@ const selectAll = async (campaignDTO) => {
           INNER JOIN [dbo].[varejo] V
           ON V.id = M.id_varejo
           
-          WHERE V.id_login = ${campaignDTO/*.usuarioId*/}`
+          WHERE V.id_login = ${campaignDTO}`
 
           
 
         );
       } else {
         if (cargo[0].descricao == "Marca") {
-            retail = await db.query(
+          campaign = await db.query(
               `SELECT 
                   C.[id]
                   ,C.[campanha]
@@ -91,14 +87,14 @@ const selectAll = async (campaignDTO) => {
               INNER JOIN [dbo].[varejo] V
               ON V.id = M.id_varejo
               
-              WHERE M.[id_login] = ${campaignDTO/*.usuarioId*/}`
+              WHERE M.[id_login] = ${campaignDTO}`
             );
 
         }
       }
     }
 
-      return retail;
+      return campaign;
     } catch (error) {
       return { error: error.message };
     }
@@ -167,13 +163,30 @@ const selectAll = async (campaignDTO) => {
   
   const deleteCampaign = async (campaignDTO) => {
     try {
-      const deleteCampaign = `DELETE FROM[dbo].[campanha] WHERE id = '${idCampanha}'`;
-     
-      const executeDeleteCampaign = await db.query(deleteCampaign, {
-        type: db.QueryTypes.DELETE,
-      });
-       
-      return { data: "Campanha deletada com sucesso!" };
+      
+     const campaign = await db.query(
+        `SELECT 
+           COUNT(1) AS quant
+        FROM [dbo].[campanha] 
+        WHERE id = '${campaignDTO.idCampanha}'`
+      );
+      const count = (JSON.parse(JSON.stringify(campaign[0]))[0].quant);
+    
+      if(count == 0){
+        console.log("AQUI PORRA");
+        return { error: "Campanha não existe!" };
+      }
+      else{
+        const deleteCampaign = `DELETE FROM [dbo].[campanha] WHERE id = '${campaignDTO.idCampanha}'`;
+      
+        const executeDeleteCampaign = await db.query(deleteCampaign, {
+          type: db.QueryTypes.DELETE,
+        });
+        
+        return { data: "Campanha deletada com sucesso!" };
+      }
+
+  
     } catch (error) {
       return { error: error.message };
     }
@@ -184,4 +197,5 @@ const selectAll = async (campaignDTO) => {
     selectAll,
     createCampaign,
     updateCampaign,
+    deleteCampaign
   };

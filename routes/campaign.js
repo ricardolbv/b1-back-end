@@ -29,8 +29,7 @@ var campaignController = require("../controllers/campaignController");
       res.statusCode = 404;
       return res.send({ status: "Id do usuário não fornecido"});
     }
-    
-    console.log(req.params.usuarioId);
+  
     const data = await campaignController.selectAll(req.params.usuarioId);
     
     if(data == null){
@@ -96,7 +95,7 @@ router.post("/create", async (req, res, next) => {
  *    summary: Excluí a campanha selecionada
  *    parameters:
  *      - in: body
- *        name: Varejo
+ *        name: Campanha
  *        schema:
  *          type: object
  *          properties:

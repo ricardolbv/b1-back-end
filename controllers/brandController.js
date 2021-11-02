@@ -1,42 +1,133 @@
 const sequelize = require("sequelize");
 const db = require("../database/db");
 
-const selectAll = async () => {
+const selectAll = async (brandDTO) => {
   try {
-    const retail = await db.query(
-      `SELECT
-        m.[id]
-        ,m.[nome]
-        ,m.[cnpj]
-        ,m.[telefone]
-        ,m.[status]
-        ,m.id_login
-        ,l.email
-        ,l.senha
-        ,m.id_cargo
-        ,c.descricao as cargo
-        ,m.id_segmento
-        ,s.segmento
-        ,m.[id_varejo]
-        ,v.nome_fantasia as [varejo_responsavel]
-        ,m.[created_at]
-        ,m.[updated_at]
-      FROM [dbo].[marca] m
 
-      inner join dbo.[login] l
-      on l.id = m.id_login
-
+     console.log("AQUI =====>",brandDTO);
+     const userSql = await db.query(
+      `SELECT c.descricao
+      FROM dbo.login l
       inner join dbo.cargo c
-      on c.id = m.id_cargo
-
-      inner join dbo.segmento s
-      on s.id = m.id_segmento
-
-      inner join dbo.varejo v
-      on v.id = m.id_varejo`
+      on l.id_cargo = c.id 
+      WHERE l.id = ${brandDTO}`
     );
 
-    return retail;
+    const cargo = JSON.parse(JSON.stringify(userSql[0]));
+
+    var brand = {};
+
+    if (cargo[0].descricao == "Suporte") {
+      brand = await db.query(
+        `SELECT
+          m.[id]
+          ,m.[nome]
+          ,m.[cnpj]
+          ,m.[telefone]
+          ,m.[status]
+          ,m.id_login
+          ,l.email
+          ,l.senha
+          ,m.id_cargo
+          ,c.descricao as cargo
+          ,m.id_segmento
+          ,s.segmento
+          ,m.[id_varejo]
+          ,v.nome_fantasia as [varejo_responsavel]
+          ,m.[created_at]
+          ,m.[updated_at]
+        FROM [dbo].[marca] m
+
+        inner join dbo.[login] l
+        on l.id = m.id_login
+
+        inner join dbo.cargo c
+        on c.id = m.id_cargo
+
+        inner join dbo.segmento s
+        on s.id = m.id_segmento
+
+        inner join dbo.varejo v
+        on v.id = m.id_varejo`
+      );
+    } 
+    else {
+      if (cargo[0].descricao == "Varejo") {
+        brand = await db.query(
+          `SELECT
+            m.[id]
+            ,m.[nome]
+            ,m.[cnpj]
+            ,m.[telefone]
+            ,m.[status]
+            ,m.id_login
+            ,l.email
+            ,l.senha
+            ,m.id_cargo
+            ,c.descricao as cargo
+            ,m.id_segmento
+            ,s.segmento
+            ,m.[id_varejo]
+            ,v.nome_fantasia as [varejo_responsavel]
+            ,m.[created_at]
+            ,m.[updated_at]
+          FROM [dbo].[marca] m
+
+          inner join dbo.[login] l
+          on l.id = m.id_login
+
+          inner join dbo.cargo c
+          on c.id = m.id_cargo
+
+          inner join dbo.segmento s
+          on s.id = m.id_segmento
+
+          inner join dbo.varejo v
+          on v.id = m.id_varejo
+
+          where v.id_login =  ${brandDTO}`
+        );
+      } else {
+        if (cargo[0].descricao == "Marca") {
+          brand = await db.query(
+            `SELECT
+              m.[id]
+              ,m.[nome]
+              ,m.[cnpj]
+              ,m.[telefone]
+              ,m.[status]
+              ,m.id_login
+              ,l.email
+              ,l.senha
+              ,m.id_cargo
+              ,c.descricao as cargo
+              ,m.id_segmento
+              ,s.segmento
+              ,m.[id_varejo]
+              ,v.nome_fantasia as [varejo_responsavel]
+              ,m.[created_at]
+              ,m.[updated_at]
+            FROM [dbo].[marca] m
+  
+            inner join dbo.[login] l
+            on l.id = m.id_login
+  
+            inner join dbo.cargo c
+            on c.id = m.id_cargo
+  
+            inner join dbo.segmento s
+            on s.id = m.id_segmento
+  
+            inner join dbo.varejo v
+            on v.id = m.id_varejo
+  
+            where m.id_login =  ${brandDTO}`
+          );
+        }
+      }
+    }
+
+    return  brand;
   } catch (error) {
     return { error: error.message };
   }
