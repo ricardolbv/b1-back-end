@@ -59,7 +59,7 @@ const verifyLogin = async (req) => {
     );
 
    if (!dataStatus[0].status){
-    console.log("aquiiiii");
+
       return {error: 'Usuário sem acesso!'};
      
     }

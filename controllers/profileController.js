@@ -2,9 +2,12 @@ const db = require("../database/db");
 
 const selectPerfil = async (profileDTO) => {
   try {
+
+    
     const sql = await db.query(
-      `SELECT descricao FROM cargo WHERE id = ${profileDTO.cargoId}`
-    );
+      `SELECT descricao FROM cargo WHERE id = ${profileDTO}`
+    )
+
     const cargo = JSON.parse(JSON.stringify(sql[0]));
 
     var profile = {};
@@ -23,7 +26,7 @@ const selectPerfil = async (profileDTO) => {
         FROM dbo.login l
         INNER JOIN dbo.suporte s
         ON l.id = s.id_login
-        WHERE l.id = '${profileDTO.userId}'`
+        WHERE l.id = '${profileDTO}'`
       );
     } else {
       if (cargo[0].descricao == "Varejo") {
@@ -42,7 +45,7 @@ const selectPerfil = async (profileDTO) => {
            FROM dbo.login l
            INNER JOIN dbo.varejo v
            ON l.id = v.id_login
-           WHERE l.id = '${profileDTO.userId}'`
+           WHERE l.id = '${profileDTO}'`
         );
       } else {
         if (cargo[0].descricao == "Marca") {
@@ -69,7 +72,7 @@ const selectPerfil = async (profileDTO) => {
             inner join dbo.varejo v
             on v.id = m.id_varejo
            
-            WHERE l.id = '${profileDTO.userId}'`
+            WHERE l.id = '${profileDTO}'`
           );
         }
       }

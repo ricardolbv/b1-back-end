@@ -16,36 +16,44 @@ function verifyJWT(req, res, next) {
 
 /**
  * @swagger
- * /profile:
- *  post:
+ * /profile/{usuarioId}:
+ *  get:
  *    summary: Retorna o perfil do usuário logado.
- *    parameters:
- *      - in: body
- *        name: Perfil
- *        schema:
- *          type: object
- *          properties:
- *            id_cargo:
- *              type: integer
- *            email:
- *              type: string
- *            senha:
- *              type: string
  *    responses:
  *      '200':
- *        description: Retorna o perfil do usuário logado
+ *        description: Retornado perfil com sucesso
+ *      '404':
+ *        description: Id do usuário não fornecido
  *      '500':
- *        description: Erro ao retornar perfil do usuário logado
+ *        description: Erro ao retornar perfil
+ *    parameters:
+ *      - in: path
+ *        name: usuarioId
+ *        schema:
+ *          type: integer
  *    tags:
  *      - Perfil
  */
 
-router.post("/", verifyJWT, async (req, res, next) => {
-  const data = await profileController.selectPerfil(req);
+router.get("/:usuarioId", async (req, res, next) => {
+
+  if(!req.params.usuarioId){
+    res.statusCode = 404;
+    return res.send({ status: "Id do usuário não fornecido"});
+  }
+
+  const data = await profileController.selectPerfil(req.params.usuarioId);
+
+  if(data == null){
+    res.statusCode = 404;
+    return res.send({ status: "Perfil não encontrado"});
+  }
+
   if (data.error) {
     res.statusCode = 500;
-    return res.send({ status: "error", data: data.error });
+    return res.send({ status: "error", data: "Erro ao retornar perfil" });
   }
+
   res.statusCode = 200;
   return res.send({ status: "ok", data: data });
 });
@@ -75,7 +83,7 @@ router.post("/", verifyJWT, async (req, res, next) => {
  *    tags:
  *      - Perfil
  */
-router.post("/update-password", verifyJWT, async (req, res, next) => {
+router.post("/update-password", async (req, res, next) => {
   const data = await profileController.updatePassword(req);
   if (data.error) {
     res.statusCode = 500;

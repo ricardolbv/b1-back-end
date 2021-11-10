@@ -4,7 +4,7 @@ const db = require("../database/db");
 const selectAll = async (brandDTO) => {
   try {
 
-     console.log("AQUI =====>",brandDTO);
+
      const userSql = await db.query(
       `SELECT c.descricao
       FROM dbo.login l
