@@ -87,7 +87,7 @@ const selectPerfil = async (profileDTO) => {
 const updatePassword = async (userDTO) => {
   try {
     const sqlUpdate = `UPDATE dbo.login
-    SET senha = '${userDTO.body.nova_senha}', updated_at =  GETDATE()
+    SET senha = '${userDTO.nova_senha}', updated_at =  GETDATE()
     WHERE id = '${userDTO.usuarioId}'`;
 
     const executeUpdate = await db.query(sqlUpdate, {
