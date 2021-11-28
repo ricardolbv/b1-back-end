@@ -124,11 +124,26 @@ const selectAll = async (campaignDTO) => {
             ,GETDATE())
       `;
 
-            const user = await db.query(insertCampaign , {
-              type: db.QueryTypes.INSERT,
-            });
+      const user = await db.query(insertCampaign , {
+          type: db.QueryTypes.INSERT,
+      });
 
-      return { data: "Campanha cadastrada com sucesso" };
+      campanhaCriada = await db.query( ` 
+      SELECT 
+        [id]
+        ,[campanha]
+        ,[descricao]
+        ,[data_de_inicio]
+        ,[data_de_fim]
+        ,[id_marca]
+        ,[created_at]
+        ,[updated_at]
+      FROM [dbo].[campanha]
+      where  id = (select max(id) from [dbo].[campanha])`);
+
+
+
+      return { data: campanhaCriada };
     } catch (error) {
       return { error: error.message };
     }
