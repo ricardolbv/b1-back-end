@@ -84,7 +84,7 @@ router.get("/:usuarioId", async (req, res, next) => {
  *      - Perfil
  */
 router.post("/update-password", async (req, res, next) => {
-  const data = await profileController.updatePassword(req);
+  const data = await profileController.updatePassword(req.body);
   if (data.error) {
     res.statusCode = 500;
     return res.send({ status: "error", data: data.error });
